@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/main.css">
+  <title>Neighborhood Map</title>
+</head>
+<body>
+
+  <div>
+    <h2 id="filter-header">Locations</h2>
+    
+    <form id="filter-form" data-bind="submit: filter">
+      <input id="filter-input" type="text" name="filter-input" placeholder="Filter the locations" >
+      <input type="submit" value="Filter">
+    </form>
+
+    <ul id="locations" data-bind="foreach: locationsArray">
+      <li data-bind="text: title, click: $parent.showinfo"></li>
+    </ul>
+  </div>
+
+  <div id="map">
+  </div>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHixCY3bJUbSNTB0G-fuAHTCFmm2wC7tM&callback=initMap"></script>
+  <script src="scripts/lib/knockout-3.5.0.js"></script>
+  <script src="scripts/lib/jquery-3.3.1.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>

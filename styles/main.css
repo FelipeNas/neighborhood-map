@@ -1,0 +1,38 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+#filter-header {
+  text-align: center;
+}
+
+#filter-form {
+  text-align: center;
+}
+
+#locations {
+  list-style: none;
+  text-align: center;
+  padding: 0;
+}
+
+#locations li {
+  margin-left: auto;
+  margin-right: auto;
+  width: 250px;
+  padding: 0;
+  border: 1px solid black;
+}
+
+#map {
+  height: 100%;
+}
