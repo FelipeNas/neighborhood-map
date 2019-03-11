@@ -7,17 +7,16 @@
   <title>Neighborhood Map</title>
 </head>
 <body>
-
   <div>
     <h2 id="filter-header">Locations</h2>
-    
+
     <form id="filter-form" data-bind="submit: filter">
-      <input id="filter-input" type="text" name="filter-input" placeholder="Filter the locations" >
+      <input id="filter-input" type="text" name="filter-input" placeholder="Filter the locations" data-bind="textInput: filtering, valueUpdate: 'keyup'">
       <input type="submit" value="Filter">
     </form>
 
-    <ul id="locations" data-bind="foreach: locationsArray">
-      <li data-bind="text: title, click: $parent.showinfo"></li>
+    <ul id="locations" data-bind="foreach: filterList">
+      <li data-bind="text: title, click: info"></li>
     </ul>
   </div>
 
