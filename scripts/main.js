@@ -121,13 +121,13 @@ function wikiapi() {
 // model for the list of locations
 var model = function(data) {
   var self = this;
-  self.title = ko.observable(data.title);
-  self.position = ko.observable(data.location);
+  self.title = data.title;
+  self.position = data.location;
 
   // function to hide the marker when filtered
   self.hideMarker = function() {
     for (var i = 0; i < markers.length; i++) {
-      if (self.title() === markers[i].title) {
+      if (self.title === markers[i].title) {
         markers[i].setMap(null);
       }
     }
@@ -136,7 +136,7 @@ var model = function(data) {
   // function to show the marker when filtered
   self.showMarker = function() {
     for (var i = 0; i < markers.length; i++) {
-      if (self.title() === markers[i].title) {
+      if (self.title === markers[i].title) {
         markers[i].setMap(map);
       }
     }
@@ -145,7 +145,7 @@ var model = function(data) {
   // function to open the infowindow when clicked on the location
   self.info = function() {
     for (var i = 0; i < markers.length; i++) {
-      if (self.title() === markers[i].title) {
+      if (self.title === markers[i].title) {
         marker = markers[i];
         populateInfoWindow(marker, largeInfoWindow);
         toggleBounce(marker);
@@ -174,7 +174,7 @@ var ViewModel = function() {
   self.filterList = ko.computed(function() {
     return self.locationsArray().filter(
       function(location) {
-        return (self.filtering().length == 0 || location.title().toLowerCase().includes(self.filtering().toLowerCase()));
+        return (self.filtering().length == 0 || location.title.toLowerCase().includes(self.filtering().toLowerCase()));
       }
     );
   });
