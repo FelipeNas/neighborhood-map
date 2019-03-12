@@ -15,7 +15,10 @@ body {
 }
 
 .filter-form {
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
+  width: 300px;
 }
 
 .locations {
@@ -27,7 +30,7 @@ body {
 .locations li {
   margin-left: auto;
   margin-right: auto;
-  width: 250px;
+  width: 300px;
   padding: 0;
   border: 1px solid black;
 }
