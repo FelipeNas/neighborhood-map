@@ -11,21 +11,21 @@ body {
 }
 
 
-#filter-header {
+.filter-header {
   text-align: center;
 }
 
-#filter-form {
+.filter-form {
   text-align: center;
 }
 
-#locations {
+.locations {
   list-style: none;
   text-align: center;
   padding: 0;
 }
 
-#locations li {
+.locations li {
   margin-left: auto;
   margin-right: auto;
   width: 250px;
@@ -33,6 +33,6 @@ body {
   border: 1px solid black;
 }
 
-#map {
+.map-canvas {
   height: 100%;
 }
