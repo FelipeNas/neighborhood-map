@@ -4,21 +4,22 @@ var markers = [];
 var largeInfoWindow;
 
 //  Setting timeout with an alert in case of not being able to connect to the Google Maps Api
-var googleRequestTimeout = setTimeout(function(){
-  alert("Unable to connect to Google Maps Api")
+var googleRequestTimeout = setTimeout(function () {
+  alert("Unable to connect to Google Maps Api");
 }, 8000);
 
 // Callback function of Google Maps Api
 function initMap() {
   // Clearing the timeout
-  clearTimeout(googleRequestTimeout)
+  clearTimeout(googleRequestTimeout);
+
   // Setting the Google maps api with position
-  map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById("map"), {
     center: {lat: -27.594517, lng: -48.535801},
     zoom: 13
   });
   // Setting the markers
-  setMarkers(map)
+  setMarkers(map);
 }
 
 // Setting the markers function
@@ -37,12 +38,12 @@ function setMarkers(map) {
       title: title,
       animation: google.maps.Animation.DROP,
       text: "Loading..."
-    })
-    markers.push(marker)
+    });
+    markers.push(marker);
     bounds.extend(marker.position);
-    marker.addListener('click', function(){
-      populateInfoWindow(this, largeInfoWindow)
-      toggleBounce(this)
+    marker.addListener("click", function(){
+      populateInfoWindow(this, largeInfoWindow);
+      toggleBounce(this);
     });
   }
   // Setting the bounds of map accordingly to markers positions
@@ -55,15 +56,15 @@ function setMarkers(map) {
 function populateInfoWindow(marker, infowindow) {
   if (infowindow.marker != marker) {
     infowindow.marker = marker;
-    var content = "<div><h3>" + marker.title + "</h3><div>" + marker.text
-    infowindow.setContent(content)
+    var content = "<div><h3>" + marker.title + "</h3><div>" + marker.text;
+    infowindow.setContent(content);
     infowindow.open(map, marker);
-    infowindow.addListener('closeclick', function() {
+    infowindow.addListener("closeclick", function() {
       infowindow.marker = null;
-      marker.setAnimation(google.maps.Animation.STOP)
+      marker.setAnimation(google.maps.Animation.STOP);
     });
   } else {
-    infowindow.close()
+    infowindow.close();
     infowindow.marker = null;
   }
 }
@@ -75,7 +76,7 @@ function toggleBounce(marker) {
       markers[i].setAnimation(google.maps.Animation.STOP);
     }
   }
-  if (typeof marker.getAnimation() !== 'undefined') {
+  if (typeof marker.getAnimation() !== "undefined") {
     marker.setAnimation(google.maps.Animation.STOP);
   } else {
     marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -85,13 +86,14 @@ function toggleBounce(marker) {
 // Wiki api ajax
 function wikiapi() {
   var content;
+  var url;
   for (var i = 0; i < markers.length; i++) {
     //  Setting timeout in case of not being able to succeed the ajax
     var wikiRequestTimeout = setTimeout(function(i){
-      content = "<div>Unable to connect to wikipedia</div>"
-      markers[i].text = content
+      content = "<div>Unable to connect to wikipedia</div>";
+      markers[i].text = content;
       if (markers[0] === markers[i]) {
-        alert("Unable to connect to wikipedia")
+        alert("Unable to connect to wikipedia");
       }
     }, 8000 , i);
     // Defining the url for the ajax
@@ -101,20 +103,20 @@ function wikiapi() {
       url: url,
       dataType: "jsonp",
       success: function(response) {
-        links = response[3];
-        titles = response[1];
+        var links = response[3];
+        var titles = response[1];
         content = "";
         for (var l = 0; l < titles.length; ++l) {
           content += "<div><a href='" + links[l] + "'>" + titles[l] + "</a></div>";
         }
         if (links == 0) {
-          content += "<div>No wiki articles</div>"
+          content += "<div>No wiki articles</div>";
         }
         // Setting the text of the markers
-        markers[i].text = content
+        markers[i].text = content;
         // clearing the timeout
-        clearTimeout(wikiRequestTimeout)
-      }})
+        clearTimeout(wikiRequestTimeout);
+      }});
     })(i, wikiRequestTimeout);
   }
 }
@@ -122,8 +124,8 @@ function wikiapi() {
 // model for the list of locations
 var model = function(data) {
   var self = this;
-  self.title = ko.observable(data.title)
-  self.position = ko.observable(data.location)
+  self.title = ko.observable(data.title);
+  self.position = ko.observable(data.location);
 
   // function to hide the marker when filtered
   self.hideMarker = function() {
@@ -147,28 +149,28 @@ var model = function(data) {
   self.info = function() {
     for (var i = 0; i < markers.length; i++) {
       if (self.title() === markers[i].title) {
-        marker = markers[i]
-        populateInfoWindow(marker, largeInfoWindow)
-        toggleBounce(marker)
+        marker = markers[i];
+        populateInfoWindow(marker, largeInfoWindow);
+        toggleBounce(marker);
       }
     }
   };
-}
+};
 
 // ViewModel
 var ViewModel = function() {
   var self = this;
 
   // Observable to get input information
-  self.filtering = ko.observable('');
+  self.filtering = ko.observable("");
 
   // Observable Array for list of locations
   self.locationsArray = ko.observableArray([]);
 
   // Pushing locations to locations array
   locations.forEach(function(location) {
-    self.locationsArray.push(new model(location))
-  })
+    self.locationsArray.push(new model(location));
+  });
 
   // Code by Viraj Bhosale; https://codepen.io/vbhosale/pen/NMYRxe?editors=1010#0.
   // List shown, updates as it is written on the filter
@@ -177,18 +179,18 @@ var ViewModel = function() {
       function(location) {
         return (self.filtering().length == 0 || location.title().toLowerCase().includes(self.filtering().toLowerCase()));
       }
-    )
+    );
   });
 
   // Filter the markers when clicked on filter button
   self.filter = function() {
     for (var i = 0; i < locations.length; i++) {
-      self.locationsArray()[i].hideMarker()
+      self.locationsArray()[i].hideMarker();
       if (locations[i].title.toLowerCase().includes($("#filter-input").val().toLowerCase())) {
-        self.locationsArray()[i].showMarker()
+        self.locationsArray()[i].showMarker();
       }
     }
   };
-}
+};
 
 ko.applyBindings(new ViewModel());
