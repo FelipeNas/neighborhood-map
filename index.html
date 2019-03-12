@@ -27,6 +27,9 @@
   <script src="scripts/lib/jquery-3.3.1.js"></script>
   <script src="scripts/data.js"></script>
   <script src="scripts/main.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHixCY3bJUbSNTB0G-fuAHTCFmm2wC7tM&callback=initMap"></script>
+  <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHixCY3bJUbSNTB0G-fuAHTCFmm2wC7tM&callback=initMap"
+    onerror="googleRequestError()">
+  </script>
 </body>
 </html>

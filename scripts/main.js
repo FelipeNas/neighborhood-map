@@ -3,16 +3,13 @@ var map;
 var markers = [];
 var largeInfoWindow;
 
-//  Setting timeout with an alert in case of not being able to connect to the Google Maps Api
-var googleRequestTimeout = setTimeout(function () {
+// function with alert in case of not being able to connect to the Google Maps Api
+function googleRequestError() {
   alert("Unable to connect to Google Maps Api");
-}, 8000);
+}
 
 // Callback function of Google Maps Api
 function initMap() {
-  // Clearing the timeout
-  clearTimeout(googleRequestTimeout);
-
   // Setting the Google maps api with position
   map = new google.maps.Map(document.getElementById("map"), {
     center: {lat: -27.594517, lng: -48.535801},
