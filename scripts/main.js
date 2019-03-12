@@ -104,7 +104,7 @@ function wikiapi() {
         var titles = response[1];
         content = "";
         for (var l = 0; l < titles.length; ++l) {
-          content += "<div><a href='" + links[l] + "'>" + titles[l] + "</a></div>";
+          content += "<div><a href='" + links[l] + "' target='_blank' rel='noopener noreferrer'>" + titles[l] + "</a></div>";
         }
         if (links == 0) {
           content += "<div>No wiki articles</div>";
