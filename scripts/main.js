@@ -170,24 +170,19 @@ var ViewModel = function() {
   });
 
   // Code by Viraj Bhosale; https://codepen.io/vbhosale/pen/NMYRxe?editors=1010#0.
-  // List shown, updates as it is written on the filter
+  // List and markers shown, updates as it is written on the filter
   self.filterList = ko.computed(function() {
     return self.locationsArray().filter(
       function(location) {
+        if (location.title.toLowerCase().includes(self.filtering().toLowerCase())) {
+          location.showMarker();
+        } else {
+          location.hideMarker();
+        }
         return (self.filtering().length == 0 || location.title.toLowerCase().includes(self.filtering().toLowerCase()));
       }
     );
   });
-
-  // Filter the markers when clicked on filter button
-  self.filter = function() {
-    for (var i = 0; i < locations.length; i++) {
-      self.locationsArray()[i].hideMarker();
-      if (locations[i].title.toLowerCase().includes($("#filter-input").val().toLowerCase())) {
-        self.locationsArray()[i].showMarker();
-      }
-    }
-  };
 };
 
 ko.applyBindings(new ViewModel());
