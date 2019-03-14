@@ -93,19 +93,8 @@ function wikiapi() {
   var url;
 
   for (var i = 0; i < markers.length; i++) {
-    //  Setting timeout in case of not being able to succeed the ajax
-    // var wikiRequestTimeout = setTimeout(function(i){
-    //   content = '<div>Unable to connect to wikipedia</div>';
-    //   markers[i].text = content;
-
-    //   if (markers[0] === markers[i]) {
-    //     alert('Unable to connect to wikipedia');
-    //   }
-    // }, 8000 , i);
-
-    // Defining the url for the ajax
     url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${markers[i].title}&format=json&callback=wikiCallback`;
-
+    
     // Ajax
     (function(i) {
       $.ajax({
