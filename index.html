@@ -7,11 +7,13 @@
   <title>Neighborhood Map</title>
 </head>
 <body>
-  <div>
-    <h2 class="filter-header">Locations</h2>
+  <div class="header"><p class="icon" data-bind="click: showFilter">FILTER</p></div>
 
-    <form class="filter-form">
-      <input class="filter-form" type="text" name="filter-input" placeholder="Filter the locations" data-bind="textInput: filtering">
+  <div class="locations-filter" data-bind="css: { open: openClass() == true }">
+    <h2 class="locations-filter-header">Locations</h2>
+
+    <form>
+      <input class="filter-text" type="text" name="filter-input" placeholder="Filter the locations" data-bind="textInput: filtering">
     </form>
 
     <ul class="locations" data-bind="foreach: filterList">
@@ -19,16 +21,12 @@
     </ul>
   </div>
 
-  <div id="map" class="map-canvas">
-  </div>
+  <div id="map" class="map-canvas"></div>
 
   <script src="scripts/lib/knockout-3.5.0.js"></script>
   <script src="scripts/lib/jquery-3.3.1.js"></script>
   <script src="scripts/data.js"></script>
   <script src="scripts/main.js"></script>
-  <script defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHixCY3bJUbSNTB0G-fuAHTCFmm2wC7tM&callback=initMap"
-    onerror="googleRequestError()">
-  </script>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHixCY3bJUbSNTB0G-fuAHTCFmm2wC7tM&callback=initMap" onerror="googleRequestError()"></script>
 </body>
 </html>

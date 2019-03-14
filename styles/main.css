@@ -4,37 +4,90 @@
 
 html,
 body {
-  padding: 0;
-  margin: 0;
-  height: 100%;
   font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-.filter-header {
-  text-align: center;
+.content {
+  height: 100%;
 }
 
-.filter-form {
-  margin-left: auto;
-  margin-right: auto;
+.filter-text {
+  height: 2em;
   text-align: center;
   width: 300px;
+}
+
+.google-error {
+  text-align: center;
+}
+
+.header {
+  background-color: white;
+  height: 48px;
+}
+
+.icon {
+  background-color: white;
+  margin: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  border-bottom: 1px solid grey;
+}
+
+.locations-filter {
+  background-color: white;
+  padding: 5px;
+  position: absolute;
+  transform: translateY(-100%);
+  transition: transform 0.5s ease;
+  z-index: 1;
+}
+
+.locations-filter.open {
+  transform: translateY(0);
+}
+
+.locations-filter-header {
+  text-align: center;
 }
 
 .locations {
   list-style: none;
-  text-align: center;
   padding: 0;
+  margin-bottom: 0;
 }
 
 .locations li {
+  align-items: center;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  display: flex;
+  height: 2em;
+  justify-content: center;
   margin-left: auto;
   margin-right: auto;
-  width: 300px;
   padding: 0;
-  border: 1px solid black;
+  width: 300px;
+  word-break: break-all;
+}
+
+.locations li:first-child {
+  border-top: 1px solid black;
 }
 
 .map-canvas {
   height: 100%;
+}
+
+.marker-text-list {
+  list-style: none;
+  padding: 0;
 }

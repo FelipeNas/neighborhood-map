@@ -3,18 +3,20 @@ var map;
 var markers = [];
 var largeInfoWindow;
 
-// function with alert in case of not being able to connect to the Google Maps Api
+// Alert in case of not being able to connect to the Google Maps Api
 function googleRequestError() {
-  alert("Unable to connect to Google Maps Api");
+  alert('Unable to connect to Google Maps Api');
+  document.getElementById('map').innerHTML = '<h3 class=google-error>Unable to connect to Google Maps Api</h3>';
 }
 
 // Callback function of Google Maps Api
 function initMap() {
   // Setting the Google maps api with position
-  map = new google.maps.Map(document.getElementById("map"), {
+  map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: -27.594517, lng: -48.535801},
     zoom: 13
   });
+
   // Setting the markers
   setMarkers(map);
 }
@@ -25,24 +27,28 @@ function setMarkers(map) {
   var bounds = new google.maps.LatLngBounds();
   // Creating infowindo for markers
   largeInfoWindow = new google.maps.InfoWindow();
+
   // Creating Marker
   for (var i = 0; i < locations.length; i++) {
     var position = locations[i].location;
     var title = locations[i].title;
+
     var marker = new google.maps.Marker({
       map: map,
       position: position,
       title: title,
       animation: google.maps.Animation.DROP,
-      text: "Loading..."
+      text: 'Loading...'
     });
-    markers.push(marker);
+
     bounds.extend(marker.position);
-    marker.addListener("click", function(){
+    markers.push(marker);
+    marker.addListener('click', function(){
       populateInfoWindow(this, largeInfoWindow);
       toggleBounce(this);
     });
   }
+
   // Setting the bounds of map accordingly to markers positions
   map.fitBounds(bounds);
   // Calling wiki api
@@ -53,10 +59,10 @@ function setMarkers(map) {
 function populateInfoWindow(marker, infowindow) {
   if (infowindow.marker != marker) {
     infowindow.marker = marker;
-    var content = "<div><h3>" + marker.title + "</h3><div>" + marker.text;
+    var content = `<div><h3>${marker.title}</h3></div><ul class='marker-text-list'>${marker.text}</ul>`;
     infowindow.setContent(content);
     infowindow.open(map, marker);
-    infowindow.addListener("closeclick", function() {
+    infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
       marker.setAnimation(google.maps.Animation.STOP);
     });
@@ -73,7 +79,8 @@ function toggleBounce(marker) {
       markers[i].setAnimation(google.maps.Animation.STOP);
     }
   }
-  if (typeof marker.getAnimation() !== "undefined") {
+
+  if (typeof marker.getAnimation() !== 'undefined') {
     marker.setAnimation(google.maps.Animation.STOP);
   } else {
     marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -84,47 +91,58 @@ function toggleBounce(marker) {
 function wikiapi() {
   var content;
   var url;
+
   for (var i = 0; i < markers.length; i++) {
     //  Setting timeout in case of not being able to succeed the ajax
-    var wikiRequestTimeout = setTimeout(function(i){
-      content = "<div>Unable to connect to wikipedia</div>";
-      markers[i].text = content;
-      if (markers[0] === markers[i]) {
-        alert("Unable to connect to wikipedia");
-      }
-    }, 8000 , i);
+    // var wikiRequestTimeout = setTimeout(function(i){
+    //   content = '<div>Unable to connect to wikipedia</div>';
+    //   markers[i].text = content;
+
+    //   if (markers[0] === markers[i]) {
+    //     alert('Unable to connect to wikipedia');
+    //   }
+    // }, 8000 , i);
+
     // Defining the url for the ajax
-    url = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + markers[i].title + "&format=json&callback=wikiCallback";
+    url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${markers[i].title}&format=json&callback=wikiCallback`;
+
     // Ajax
-    (function(i, wikiRequestTimeout) { $.ajax({
-      url: url,
-      dataType: "jsonp",
-      success: function(response) {
-        var links = response[3];
-        var titles = response[1];
-        content = "";
-        for (var l = 0; l < titles.length; ++l) {
-          content += "<div><a href='" + links[l] + "' target='_blank' rel='noopener noreferrer'>" + titles[l] + "</a></div>";
+    (function(i) {
+      $.ajax({
+        url: url,
+        dataType: 'jsonp',
+        success: function(response) {
+          var links = response[3];
+          var titles = response[1];
+          content = '';
+          for (var l = 0; l < titles.length; ++l) {
+            content += `<li><a href='${links[l]}' target='_blank' rel='noopener noreferrer'>${titles[l]}</a></li>`;
+          }
+          if (links == 0) {
+            content += '<div>No wiki articles</div>';
+          }
+          // Setting the text of the markers
+          markers[i].text = content;
+          // Clearing the timeout;
         }
-        if (links == 0) {
-          content += "<div>No wiki articles</div>";
-        }
-        // Setting the text of the markers
-        markers[i].text = content;
-        // clearing the timeout
-        clearTimeout(wikiRequestTimeout);
-      }});
-    })(i, wikiRequestTimeout);
+      })
+        .fail(function() {
+          content = '<li>Unable to connect to wikipedia</li>';
+          markers[i].text = content;
+
+          if (i === 0) alert('Unable to connect to wikipedia');
+        });
+    })(i);
   }
 }
 
-// model for the list of locations
+// Model for the list of locations
 var model = function(data) {
   var self = this;
   self.title = data.title;
   self.position = data.location;
 
-  // function to hide the marker when filtered
+  // Hide the marker when filtered
   self.hideMarker = function() {
     for (var i = 0; i < markers.length; i++) {
       if (self.title === markers[i].title) {
@@ -133,7 +151,7 @@ var model = function(data) {
     }
   };
 
-  // function to show the marker when filtered
+  // Show the marker when filtered
   self.showMarker = function() {
     for (var i = 0; i < markers.length; i++) {
       if (self.title === markers[i].title) {
@@ -142,7 +160,7 @@ var model = function(data) {
     }
   };
 
-  // function to open the infowindow when clicked on the location
+  // Open the infowindow when clicked on the location
   self.info = function() {
     for (var i = 0; i < markers.length; i++) {
       if (self.title === markers[i].title) {
@@ -158,31 +176,43 @@ var model = function(data) {
 var ViewModel = function() {
   var self = this;
 
-  // Observable to get input information
-  self.filtering = ko.observable("");
-
-  // Observable Array for list of locations
+  self.filtering = ko.observable('');
   self.locationsArray = ko.observableArray([]);
+  self.openClass = ko.observable(false);
 
   // Pushing locations to locations array
   locations.forEach(function(location) {
     self.locationsArray.push(new model(location));
   });
 
-  // Code by Viraj Bhosale; https://codepen.io/vbhosale/pen/NMYRxe?editors=1010#0.
   // List and markers shown, updates as it is written on the filter
   self.filterList = ko.computed(function() {
     return self.locationsArray().filter(
       function(location) {
-        if (location.title.toLowerCase().includes(self.filtering().toLowerCase())) {
+        // Verifing if locations contains filter input
+        function check() {
+          return location.title.toLowerCase().includes(self.filtering().toLowerCase());
+        }
+
+        // Hiding markers
+        if (check()) {
           location.showMarker();
         } else {
           location.hideMarker();
         }
-        return (self.filtering().length == 0 || location.title.toLowerCase().includes(self.filtering().toLowerCase()));
+
+        return (self.filtering().length == 0 || check());
       }
     );
   });
+
+  self.showFilter = function() {
+    if (self.openClass()) {
+      self.openClass(false);
+    } else {
+      self.openClass(true);
+    }
+  };
 };
 
 ko.applyBindings(new ViewModel());
