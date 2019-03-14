@@ -10,10 +10,6 @@ body {
   padding: 0;
 }
 
-.content {
-  height: 100%;
-}
-
 .filter-text {
   height: 2em;
   text-align: center;
@@ -84,7 +80,7 @@ body {
 }
 
 .map-canvas {
-  height: 100%;
+  height: calc(100% - 48px);
 }
 
 .marker-text-list {
